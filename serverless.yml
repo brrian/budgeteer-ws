@@ -1,0 +1,119 @@
+service: budgeteer-ws
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  profile: budgeteer
+  stage: ${opt:stage, 'local'}
+  region: ${opt:region, 'local'}
+  environment: ${self:custom.env.vars}
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 'dynamodb:GetItem'
+        - 'dynamodb:PutItem'
+        - 'dynamodb:UpdateItem'
+        - 'dynamodb:Query'
+        - 'dynamodb:Scan'
+      Resource:
+        Fn::GetAtt:
+          - DynamoDbTable
+          - Arn
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-dynamodb-local
+  - serverless-offline
+
+custom:
+  env: ${file(./envs/${self:provider.stage}.yml)}
+  serverless-offline:
+    port: 4000
+  dynamodb:
+    start:
+      dbPath: ${env:PWD}/.db
+      migrate: true
+      port: 3002
+    stages:
+      - ${self:provider.stage}
+
+functions:
+  validateGroup:
+    handler: src/group/validate/index.default
+    events:
+      - http:
+          path: api/groups/validate/{id}
+          method: get
+          cors: true
+
+  findGroup:
+    handler: src/group/find/index.default
+    events:
+      - http:
+          path: api/groups/me
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+
+resources:
+  Resources:
+    ApiGatewayAuthorizer:
+      Type: AWS::ApiGateway::Authorizer
+      Properties:
+        AuthorizerResultTtlInSeconds: 300
+        IdentitySource: method.request.header.Authorization
+        Name: Cognito
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        Type: COGNITO_USER_POOLS
+        ProviderARNs:
+          - Fn::GetAtt:
+              - CognitoUserPool
+              - Arn
+
+    DynamoDbTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.stage}-${self:provider.region}-budgeteer
+        AttributeDefinitions:
+          - AttributeName: pk
+            AttributeType: S
+          - AttributeName: sk
+            AttributeType: S
+        KeySchema:
+          - AttributeName: pk
+            KeyType: HASH
+          - AttributeName: sk
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    CognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        UserPoolName: ${self:provider.stage}-${self:provider.region}-budgeteer
+        UsernameAttributes:
+          - email
+        Schema:
+          - AttributeDataType: String
+            Mutable: true
+            Name: groupId
+
+    CognitoUserPoolClient:
+      Type: 'AWS::Cognito::UserPoolClient'
+      Properties:
+        ClientName: ${self:provider.stage}-${self:provider.region}-budgeteer
+        GenerateSecret: false
+        UserPoolId:
+          Ref: CognitoUserPool
+
+  Outputs:
+    CognitoUserPoolArn:
+      Value:
+        Fn::GetAtt:
+          - CognitoUserPool
+          - Arn

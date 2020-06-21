@@ -1,0 +1,2 @@
+vars:
+  DYNAMODB_TABLE: local-local-budgeteer
