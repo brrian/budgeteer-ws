@@ -98,6 +98,8 @@ resources:
         UserPoolName: ${self:provider.stage}-${self:provider.region}-budgeteer
         UsernameAttributes:
           - email
+        AutoVerifiedAttributes:
+          - email
         Schema:
           - AttributeDataType: String
             Mutable: true
