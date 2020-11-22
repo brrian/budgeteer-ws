@@ -1,2 +1,4 @@
 vars:
+  STAGE: 'local'
+
   DYNAMODB_TABLE: local-local-budgeteer
