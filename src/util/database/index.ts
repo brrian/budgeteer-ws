@@ -4,7 +4,7 @@ const dynamoConfig: ClientConfiguration = {};
 
 if (process.env.IS_OFFLINE) {
   dynamoConfig.region = 'localhost';
-  dynamoConfig.endpoint = process.env.DYNAMODB_ENDPOINT || 'http://localhost:3002';
+  dynamoConfig.endpoint = process.env.DYNAMODB_ENDPOINT || 'http://localhost:3001';
 }
 
 export const client = new DocumentClient(dynamoConfig);
