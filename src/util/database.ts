@@ -7,7 +7,7 @@ if (process.env.IS_OFFLINE) {
   dynamoConfig.endpoint = process.env.DYNAMODB_ENDPOINT || 'http://localhost:3001';
 }
 
-export const client = new DocumentClient(dynamoConfig);
+export const db = new DocumentClient(dynamoConfig);
 
 export const Schema = {
   TableName: process.env.DYNAMODB_TABLE || 'budgeteer',

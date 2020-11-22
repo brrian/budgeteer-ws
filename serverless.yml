@@ -40,25 +40,23 @@ custom:
       - ${self:provider.stage}
 
 functions:
-  validateGroup:
-    handler: src/group/validate/index.default
+  graphql:
+    handler: src/graphql/graphqlHandler.default
     events:
       - http:
-          path: api/groups/validate/{id}
-          method: get
-          cors: true
-
-  findGroup:
-    handler: src/group/find/index.default
-    events:
-      - http:
-          path: api/groups/me
-          method: get
-          cors: true
+          path: graphql
+          method: any
           authorizer:
             type: COGNITO_USER_POOLS
             authorizerId:
               Ref: ApiGatewayAuthorizer
+
+  validateGroup:
+    handler: src/rest/validateGroupHandler.default
+    events:
+      - http:
+          path: api/validate-group/{id}
+          method: get
 
 resources:
   Resources:

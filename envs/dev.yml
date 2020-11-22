@@ -1,4 +1,4 @@
 vars:
-  CORS_ORIGIN: https://dev.budgeteer.tinynudge.co
+  STAGE: 'dev'
 
   DYNAMODB_TABLE: 'dev-us-east-1-budgeteer'
