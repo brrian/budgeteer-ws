@@ -1,4 +1,6 @@
-export default function errorResponse(message: string, status = 500) {
+import { APIGatewayProxyResult } from 'aws-lambda';
+
+export default function errorResponse(message: string, status = 500): APIGatewayProxyResult {
   console.error(message);
 
   return {

@@ -1,4 +1,4 @@
 vars:
-  CORS_ORIGIN: https://develop.d2dgilkiqj29od.amplifyapp.com
+  CORS_ORIGIN: https://dev.budgeteer.tinynudge.co
 
   DYNAMODB_TABLE: 'dev-us-east-1-budgeteer'

@@ -7,6 +7,8 @@ provider:
   stage: ${opt:stage, 'local'}
   region: ${opt:region, 'local'}
   environment: ${self:custom.env.vars}
+  apiGateway:
+    shouldStartNameWithService: true
   iamRoleStatements:
     - Effect: 'Allow'
       Action:
@@ -28,12 +30,12 @@ plugins:
 custom:
   env: ${file(./envs/${self:provider.stage}.yml)}
   serverless-offline:
-    port: 4000
+    httpPort: 4000
   dynamodb:
     start:
       dbPath: ${env:PWD}/.db
       migrate: true
-      port: 3002
+      port: 3001
     stages:
       - ${self:provider.stage}
 

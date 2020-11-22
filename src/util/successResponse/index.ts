@@ -1,8 +1,10 @@
+import { APIGatewayProxyResult } from 'aws-lambda';
+
 interface Data {
   [key: string]: any;
 }
 
-export default function successResponse(data: Data, status = 200) {
+export default function successResponse(data: Data, status = 200): APIGatewayProxyResult {
   return {
     statusCode: status,
     headers: {
