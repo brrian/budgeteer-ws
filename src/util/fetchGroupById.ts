@@ -1,8 +1,10 @@
 import { db, Schema } from './database';
 
 interface Group {
+  categories: string;
   id: string;
   name: string;
+  runningBalance: number;
 }
 
 export default async function fetchGroupById(id: string): Promise<Group> {

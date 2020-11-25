@@ -1,7 +1,10 @@
 import { ApolloServer, gql, makeExecutableSchema } from 'apollo-server-lambda';
+import { GraphQLJSON } from 'graphql-scalars';
 import { groupResolvers, groupTypeDefs } from './group';
 
-const baseTypeDefs = gql`
+const rootTypeDefs = gql`
+  scalar JSON
+
   type Query {
     _: Boolean
   }
@@ -11,9 +14,13 @@ const baseTypeDefs = gql`
   }
 `;
 
+const rootResolvers = {
+  JSON: GraphQLJSON,
+};
+
 const schema = makeExecutableSchema({
-  typeDefs: [baseTypeDefs, groupTypeDefs],
-  resolvers: [groupResolvers],
+  typeDefs: [rootTypeDefs, groupTypeDefs],
+  resolvers: [rootResolvers, groupResolvers],
 });
 
 const server = new ApolloServer({
