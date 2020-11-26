@@ -1,8 +1,11 @@
 import { ApolloServer, gql, makeExecutableSchema } from 'apollo-server-lambda';
-import { GraphQLJSON } from 'graphql-scalars';
+import { DateResolver, GraphQLJSON } from 'graphql-scalars';
 import { groupResolvers, groupTypeDefs } from './group';
+import { transactionsResolvers, transactionsTypeDefs } from './transactions';
 
 const rootTypeDefs = gql`
+  scalar Date
+
   scalar JSON
 
   type Query {
@@ -15,12 +18,13 @@ const rootTypeDefs = gql`
 `;
 
 const rootResolvers = {
+  Date: DateResolver,
   JSON: GraphQLJSON,
 };
 
 const schema = makeExecutableSchema({
-  typeDefs: [rootTypeDefs, groupTypeDefs],
-  resolvers: [rootResolvers, groupResolvers],
+  typeDefs: [rootTypeDefs, groupTypeDefs, transactionsTypeDefs],
+  resolvers: [rootResolvers, groupResolvers, transactionsResolvers],
 });
 
 const server = new ApolloServer({
