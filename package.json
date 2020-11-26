@@ -4,9 +4,10 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "sls offline start",
     "deploy": "sls deploy",
-    "lint": "eslint src/**"
+    "lint": "eslint src/**",
+    "start": "sls offline start",
+    "postinstall": "sls dynamodb install && mkdir .db"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.56",
