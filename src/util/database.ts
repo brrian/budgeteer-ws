@@ -13,5 +13,6 @@ export const Schema = {
   TableName: process.env.DYNAMODB_TABLE || 'budgeteer',
   Entities: {
     Group: 'GROUP',
+    Transaction: 'TRANSACTION',
   },
 };
