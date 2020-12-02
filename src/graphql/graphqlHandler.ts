@@ -34,7 +34,9 @@ const server = new ApolloServer({
       context,
       user: {
         id: event.requestContext.authorizer.claims?.sub,
-        groupId: event.requestContext.authorizer.claims?.['custom:groupId'],
+        groupId: process.env.IS_OFFLINE
+          ? 'LOCAL'
+          : event.requestContext.authorizer.claims?.['custom:groupId'],
       },
     };
   },
