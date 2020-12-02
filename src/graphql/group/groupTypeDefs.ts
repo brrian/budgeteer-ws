@@ -1,6 +1,6 @@
 import { gql } from 'apollo-server-lambda';
 
-const groupTypeDefs = gql`
+export default gql`
   type Group {
     categories: JSON!
     id: String!
@@ -12,5 +12,3 @@ const groupTypeDefs = gql`
     group: Group
   }
 `;
-
-export default groupTypeDefs;
