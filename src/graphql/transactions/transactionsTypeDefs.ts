@@ -1,6 +1,6 @@
 import { gql } from 'apollo-server-lambda';
 
-const transactionsTypeDefs = gql`
+export default gql`
   type Transaction {
     amount: Float!
     categoryId: String!
@@ -30,5 +30,3 @@ const transactionsTypeDefs = gql`
     importTransactions(service: String!, transactions: [JSON!]!): [Transaction]
   }
 `;
-
-export default transactionsTypeDefs;

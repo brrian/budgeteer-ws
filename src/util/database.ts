@@ -12,6 +12,7 @@ export const db = new DocumentClient(dynamoConfig);
 export const Schema = {
   TableName: process.env.DYNAMODB_TABLE || 'budgeteer',
   Entities: {
+    Budget: 'BUDGET',
     Group: 'GROUP',
     Transaction: 'TRANSACTION',
   },
