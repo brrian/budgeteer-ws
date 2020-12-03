@@ -5,7 +5,7 @@ import { Budget } from '../models';
 export default async function fetchBudgetByMonthYear(
   groupId: string,
   month: number,
-  year?: number
+  year: number
 ): Promise<Budget> {
   const timestamp = getMonthYearTimestamp(month, year);
 

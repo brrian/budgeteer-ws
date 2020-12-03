@@ -18,6 +18,7 @@ export default async function fetchTransactionsByRange(
         ':pk': `${Schema.Entities.Group}#${groupId}`,
         ':start': `${Schema.Entities.Transaction}#${endTimestamp}`,
       },
+      ScanIndexForward: false,
     })
     .promise();
 

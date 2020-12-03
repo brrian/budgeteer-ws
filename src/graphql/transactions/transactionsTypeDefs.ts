@@ -24,6 +24,7 @@ export default gql`
 
   extend type Query {
     transactionsByDateRange(start: Date, end: Date): [Transaction!]!
+    transactionsByMonthYear(month: Int!, year: Int!): [Transaction!]!
   }
 
   extend type Mutation {

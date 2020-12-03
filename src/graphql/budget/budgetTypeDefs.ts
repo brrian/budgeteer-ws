@@ -12,6 +12,6 @@ export default gql`
   }
 
   extend type Query {
-    budgetByMonthYear(month: Int!, year: Int): Budget
+    budgetByMonthYear(month: Int!, year: Int!): Budget
   }
 `;
