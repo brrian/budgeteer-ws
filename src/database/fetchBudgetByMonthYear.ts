@@ -1,6 +1,6 @@
-import { db, Schema } from '../../../util/database';
-import getMonthYearTimestamp from '../../util/getMonthYearTimestamp';
-import { Budget } from '../models';
+import { db, Schema } from '.';
+import { Budget } from '../graphql/budget/models';
+import getMonthYearTimestamp from '../graphql/util/getMonthYearTimestamp';
 
 export default async function fetchBudgetByMonthYear(
   groupId: string,

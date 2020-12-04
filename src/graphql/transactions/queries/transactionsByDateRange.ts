@@ -1,4 +1,4 @@
-import fetchTransactionsByRange from '../util/fetchTransactionsByRange';
+import { fetchTransactionsByRange } from '../../../database';
 import { FieldResolver } from '../../models';
 
 interface TransactionsByDateRangeArgs {

@@ -1,5 +1,5 @@
+import { fetchBudgetByMonthYear } from '../../../database';
 import { FieldResolver } from '../../models';
-import fetchBudgetByMonthYear from '../util/fetchBudgetByMonthYear';
 
 interface BudgetByMonthYearArgs {
   month: number;

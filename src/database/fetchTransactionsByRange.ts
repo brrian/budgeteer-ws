@@ -1,13 +1,14 @@
-import { db, Schema } from '../../../util/database';
-import { Transaction } from '../models';
+import { Transaction } from '../graphql/transactions/models';
+import getTimestampFromDate from '../util/getTimestampFromDate';
+import { db, Schema } from './database';
 
 export default async function fetchTransactionsByRange(
   groupId: string,
   startDate: string,
   endDate: string
 ): Promise<Transaction[]> {
-  const startTimestamp = new Date(`${startDate}T00:00:00`).getTime();
-  const endTimestamp = new Date(`${endDate}T23:59:59`).getTime();
+  const startTimestamp = getTimestampFromDate(startDate);
+  const endTimestamp = getTimestampFromDate(endDate, true);
 
   const results = await db
     .query({

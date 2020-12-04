@@ -1,7 +1,6 @@
-import { db, Schema } from '../../../util/database';
+import { createTransaction, fetchTransactionsByRange } from '../../../database';
 import { FieldResolver } from '../../models';
 import { UnknownTransaction } from '../models';
-import fetchTransactionsByRange from '../util/fetchTransactionsByRange';
 import filterExistingTransactions from '../util/filterExistingTransactions';
 import getTransactionsDateRange from '../util/getTransactionsDateRange';
 import transformTransaction from '../util/transformTransaction';
@@ -25,22 +24,7 @@ const importTransactions: FieldResolver<ImportTransactionsArgs> = async (
   const existingTransactions = await fetchTransactionsByRange(groupId, ...dateRange);
   const newTransactions = filterExistingTransactions(existingTransactions, transformedTransactions);
 
-  await Promise.all(
-    newTransactions.map(transaction => {
-      const timestamp = new Date(`${transaction.date}T00:00:00`).getTime();
-
-      return db
-        .put({
-          TableName: Schema.TableName,
-          Item: {
-            pk: `${Schema.Entities.Group}#${context.user.groupId}`,
-            sk: `${Schema.Entities.Transaction}#${timestamp}#${transaction.id}`,
-            ...transaction,
-          },
-        })
-        .promise();
-    })
-  );
+  await Promise.all(newTransactions.map(transaction => createTransaction(groupId, transaction)));
 
   return newTransactions;
 };

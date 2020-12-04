@@ -1,4 +1,4 @@
-import fetchGroupById from '../../../util/fetchGroupById';
+import { fetchGroupById } from '../../../database';
 import { FieldResolver } from '../../models';
 
 const group: FieldResolver = async (_source, _args, context) => {
