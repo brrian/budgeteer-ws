@@ -22,6 +22,26 @@ export default gql`
     note: String
   }
 
+  input TransactionInput {
+    amount: Float
+    categoryId: String
+    date: Date!
+    description: String
+    disabled: Boolean
+    id: String!
+    note: String
+    service: String
+    splits: [SplitInput!]
+  }
+
+  input SplitInput {
+    amount: Float!
+    categoryId: String!
+    disabled: Boolean!
+    id: String!
+    note: String!
+  }
+
   extend type Query {
     transactionsByDateRange(start: Date, end: Date): [Transaction!]!
     transactionsByMonthYear(month: Int!, year: Int!): [Transaction!]!
@@ -29,5 +49,6 @@ export default gql`
 
   extend type Mutation {
     importTransactions(service: String!, transactions: [JSON!]!): [Transaction]
+    updateTransaction(transaction: TransactionInput!): Transaction!
   }
 `;
