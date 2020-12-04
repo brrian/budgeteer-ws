@@ -1,4 +1,4 @@
-import { db, Schema } from './database';
+import { db, Schema } from '.';
 
 interface Group {
   categories: string;

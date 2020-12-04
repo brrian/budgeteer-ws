@@ -1,6 +1,6 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
+import { fetchGroupById } from '../database';
 import errorResponse from '../util/errorResponse';
-import fetchGroupById from '../util/fetchGroupById';
 import successResponse from '../util/successResponse';
 
 const validateGroupHandler: APIGatewayProxyHandler = async event => {

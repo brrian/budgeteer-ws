@@ -1,6 +1,6 @@
+import { fetchTransactionsByRange } from '../../../database';
 import { FieldResolver } from '../../models';
 import getMonthYearTimestamp from '../../util/getMonthYearTimestamp';
-import fetchTransactionsByRange from '../util/fetchTransactionsByRange';
 
 interface TransactionsByMonthYearArgs {
   month: number;
