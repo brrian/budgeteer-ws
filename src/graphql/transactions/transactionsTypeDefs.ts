@@ -30,6 +30,7 @@ export default gql`
     id: String!
     note: String
     service: String
+    serviceId: String
     splits: [SplitInput!]
   }
 
@@ -46,6 +47,7 @@ export default gql`
   }
 
   extend type Mutation {
+    deleteTransaction(transaction: TransactionInput!): Boolean!
     importTransactions(service: String!, transactions: [JSON!]!): [Transaction]
     updateTransaction(transaction: TransactionInput!): Transaction!
   }

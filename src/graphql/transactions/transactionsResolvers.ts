@@ -1,3 +1,4 @@
+import deleteTransaction from './mutations/deleteTransaction';
 import importTransactions from './mutations/importTransactions';
 import updateTransaction from './mutations/updateTransaction';
 import transactionsByDateRange from './queries/transactionsByDateRange';
@@ -9,6 +10,7 @@ export default {
     transactionsByMonthYear,
   },
   Mutation: {
+    deleteTransaction,
     importTransactions,
     updateTransaction,
   },
