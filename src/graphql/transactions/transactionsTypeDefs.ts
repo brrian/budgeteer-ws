@@ -18,7 +18,6 @@ export default gql`
     amount: Float!
     categoryId: String!
     disabled: Boolean!
-    id: String!
     note: String
   }
 
@@ -38,7 +37,6 @@ export default gql`
     amount: Float!
     categoryId: String!
     disabled: Boolean!
-    id: String!
     note: String!
   }
 
