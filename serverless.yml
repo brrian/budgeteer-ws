@@ -58,6 +58,13 @@ functions:
           path: api/validate-group/{id}
           method: get
 
+  setMonthEndBalances:
+    handler: src/setMonthEndBalances/setMonthEndBalancesHandler.default
+    timeout: 45
+    events:
+      - eventBridge:
+          schedule: cron(0 6 1 * ? *)
+
 resources:
   Resources:
     ApiGatewayAuthorizer:
@@ -83,6 +90,8 @@ resources:
             AttributeType: S
           - AttributeName: sk
             AttributeType: S
+          - AttributeName: groupId
+            AttributeType: S
         KeySchema:
           - AttributeName: pk
             KeyType: HASH
@@ -91,6 +100,18 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+        GlobalSecondaryIndexes:
+          - IndexName: GS1
+            KeySchema:
+              - AttributeName: sk
+                KeyType: HASH
+              - AttributeName: groupId
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
 
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
