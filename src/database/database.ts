@@ -11,9 +11,13 @@ export const db = new DocumentClient(dynamoConfig);
 
 export const Schema = {
   TableName: process.env.DYNAMODB_TABLE || 'budgeteer',
+  Indexes: {
+    GS1: 'GS1',
+  },
   Entities: {
     Budget: 'BUDGET',
     Group: 'GROUP',
+    MonthEndBalance: 'MONTH_END_BALANCE',
     Transaction: 'TRANSACTION',
   },
 };

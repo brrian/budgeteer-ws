@@ -7,9 +7,17 @@ export interface Transaction {
   description: string;
   disabled: boolean;
   id: string;
+  note?: string;
   service: string;
   serviceId: string;
-  splits: [];
+  splits: Split[];
+}
+
+interface Split {
+  amount: number;
+  categoryId: string;
+  disabled: boolean;
+  note?: string;
 }
 
 export interface PersonalCapitalTransaction {
