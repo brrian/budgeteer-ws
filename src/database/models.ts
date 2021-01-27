@@ -5,3 +5,7 @@ export interface Group {
   name: string;
   runningBalance: number;
 }
+
+export interface MonthEndBalance {
+  balance: number;
+}
