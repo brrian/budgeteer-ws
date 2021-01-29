@@ -18,9 +18,15 @@ provider:
         - 'dynamodb:Query'
         - 'dynamodb:Scan'
       Resource:
-        Fn::GetAtt:
-          - DynamoDbTable
-          - Arn
+        - Fn::GetAtt:
+            - DynamoDbTable
+            - Arn
+        - Fn::Join:
+            - '/'
+            - - Fn::GetAtt:
+                  - DynamoDbTable
+                  - Arn
+              - 'index/*'
 
 plugins:
   - serverless-plugin-typescript
