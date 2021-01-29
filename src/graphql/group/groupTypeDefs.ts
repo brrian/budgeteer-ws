@@ -5,7 +5,7 @@ export default gql`
     categories: JSON!
     id: String!
     name: String!
-    runningBalance: Int!
+    runningBalance: Float!
   }
 
   extend type Query {
