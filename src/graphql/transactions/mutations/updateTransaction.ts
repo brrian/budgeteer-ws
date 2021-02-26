@@ -6,6 +6,7 @@ import fetchTransactionByIdDate from '../../../database/fetchTransactionByIdDate
 import updateRunningBalance from '../../../database/updateRunningBalance';
 import { FieldResolver } from '../../models';
 import { Transaction } from '../models';
+import getTransactionBalance from '../util/getTransactionBalance';
 import isStaleTransaction from '../util/isStaleTransaction';
 
 interface UpdateTransactionArgs {
@@ -19,27 +20,17 @@ const updateTransaction: FieldResolver<UpdateTransactionArgs> = async (
 ) => {
   const { groupId } = context.user;
 
-  const isStale = isStaleTransaction(transaction);
+  const oldTransaction = isStaleTransaction(transaction)
+    ? await fetchTransactionByIdDate(groupId, transaction.id, transaction.date)
+    : undefined;
 
-  if (isStale) {
-    const savedTransaction = await fetchTransactionByIdDate(
-      groupId,
-      transaction.id,
-      transaction.date
-    );
+  const updatedTransaction = await updateTransactionItem(groupId, transaction);
 
-    let balanceDelta = 0;
+  if (oldTransaction) {
+    const oldBalance = getTransactionBalance(oldTransaction);
+    const newBalance = getTransactionBalance(updatedTransaction);
 
-    if (transaction.disabled === true && savedTransaction.disabled === false) {
-      // If we disabled a previously enabled transaction, subtract the old amount
-      balanceDelta -= savedTransaction.amount;
-    } else if (transaction.disabled === false && savedTransaction.disabled === true) {
-      // If we enabled a previously enabled transaction, just add the new amount
-      balanceDelta += transaction.amount ?? savedTransaction.amount;
-    } else if (transaction.amount) {
-      // Otherwise just change the difference
-      balanceDelta += transaction.amount - savedTransaction.amount;
-    }
+    const balanceDelta = oldBalance - newBalance;
 
     if (balanceDelta !== 0) {
       await Promise.all([
@@ -49,7 +40,7 @@ const updateTransaction: FieldResolver<UpdateTransactionArgs> = async (
     }
   }
 
-  return updateTransactionItem(groupId, transaction);
+  return updatedTransaction;
 };
 
 export default updateTransaction;
