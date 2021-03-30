@@ -9,15 +9,18 @@ export default async function updateOrCreateMonthEndBalance(
 ): Promise<void> {
   const timestamp = getTimestampFromDate(date);
 
+  const startOfMonth = new Date(timestamp);
+  startOfMonth.setDate(1);
+
   try {
-    const monthEndBalance = await fetchMonthEndBalanceByDate(groupId, date);
+    const monthEndBalance = await fetchMonthEndBalanceByDate(groupId, startOfMonth);
 
     await db
       .update({
         TableName: Schema.TableName,
         Key: {
           pk: `${Schema.Entities.Group}#${groupId}`,
-          sk: `${Schema.Entities.MonthEndBalance}#${timestamp}`,
+          sk: `${Schema.Entities.MonthEndBalance}#${startOfMonth.getTime()}`,
         },
         UpdateExpression: 'SET balance = :balance',
         ExpressionAttributeValues: {
@@ -30,7 +33,7 @@ export default async function updateOrCreateMonthEndBalance(
       });
   } catch (error) {
     if (error.message.startsWith('Unable to find month end balance')) {
-      await createMonthEndBalance(groupId, date, amount);
+      await createMonthEndBalance(groupId, startOfMonth, amount);
     } else {
       throw error;
     }

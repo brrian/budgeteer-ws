@@ -3,7 +3,7 @@ import getTimestampFromDate from '../util/getTimestampFromDate';
 
 export default async function createMonthEndBalance(
   groupId: string,
-  date: string,
+  date: string | Date,
   balance: number
 ): Promise<void> {
   const timestamp = getTimestampFromDate(date);
