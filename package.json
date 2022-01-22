@@ -24,6 +24,6 @@
   "dependencies": {
     "apollo-server-lambda": "^2.19.0",
     "graphql-scalars": "^1.5.0",
-    "nanoid": "^3.1.18"
+    "nanoid": "^3.1.31"
   }
 }
